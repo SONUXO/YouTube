@@ -1,0 +1,23 @@
+{
+  "name": "youtube",
+  "version": "1.0.0",
+  "description": "backend work for youtube clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SONUXO/YouTube.git"
+  },
+  "keywords": [
+    "js",
+    "backend"
+  ],
+  "author": "Sonu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SONUXO/YouTube/issues"
+  },
+  "homepage": "https://github.com/SONUXO/YouTube#readme"
+}
