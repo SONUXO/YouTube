@@ -24,7 +24,7 @@ const userSchema = new Schema({
         trim: true,
         index : true
     },
-    avtar:{
+    avatar:{
         type:string,
         required: true
     },

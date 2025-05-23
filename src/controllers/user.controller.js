@@ -15,22 +15,32 @@ const registerUser = asyncHandler(async (req,res) => {
     // check for user creation
     // return res
 
+
+    // extracting all the data from the request
     const {fullName,email, userName,password} = req.body
     console.log("email: ",email);
 
+    // checking if they are valid
     if([fullName,email,userName,password].some((field)=> field?.trim()=== "")){
         throw new apiError(400,"All fields are required")
     }
 
-    const exsitedUser = User.findOne({$or: [{ userName },{ email }]})
+    // checking is the user is already present with the email or name
+    const exsitedUser = await User.findOne({$or: [{ userName },{ email }]})
 
     if(exsitedUser){
         throw new apiError(409,"User with email or username already exist")
     }
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length >0){
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
+
+    //we have set avatar to be required, that is why is avatar is not set
+    //throw an error
     if(!avatarLocalPath){
         throw new apiError(400,"Avatar file is required")
     }
@@ -42,6 +52,7 @@ const registerUser = asyncHandler(async (req,res) => {
         throw new apiError(400,"Avatar file is required")
     }
 
+    // Creates an object if everything went well
     const user = await User.create({
         fullName,
         avatar: avatar.url,
@@ -51,6 +62,7 @@ const registerUser = asyncHandler(async (req,res) => {
         userName: userName.toLowerCase()
     })
 
+    //we are removing the passwork and refreshToken from the received value
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
     )
